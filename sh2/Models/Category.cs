@@ -13,5 +13,6 @@ namespace sh2.Models
         public Category? ParentCategory { get; set; }
         public ICollection<Category>? SubCategories { get; set; }
         public ICollection<ProductCategory>? ProductCategories { get; set; }
+        public ICollection<CategoryImage>? CategoryImages { get; set; }
     }
 }
