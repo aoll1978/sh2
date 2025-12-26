@@ -231,6 +231,12 @@ _pkginfo.txt
 
 # Others
 ClientBin/
+bin/
+obj/
+
+appsettings.Development.json
+appsettings.Local.json
+
 ~$*
 *~
 *.dbmdl
