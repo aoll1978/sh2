@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace sh2.Models
 {
-    public class Role
+    // Наследуем от IdentityRole<int> для поддержки ASP.NET Core Identity
+    public class Role : IdentityRole<int>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<UserRole>? UserRoles { get; set; }
     }
 }

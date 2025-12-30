@@ -1,26 +1,28 @@
 using Microsoft.EntityFrameworkCore;
 using sh2.Data;
 using Microsoft.AspNetCore.Identity;
-
+using sh2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Получаем строку подключения из appsettings.json
+// 1. Get the connection string from appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-// 2. Регистрируем контекст базы данных
+// 2. Register the application's database context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// 3. Добавляем Identity и настраиваем его для работы с нашим контекстом
+// builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+
+// 3. Configure Identity with roles and custom settings
 builder.Services.AddIdentity<sh2.Models.User, sh2.Models.Role>(options =>
 {
-    // Настройки блокировки пользователя
+    // Lockout settings
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(1);
     options.Lockout.MaxFailedAccessAttempts = 3;
     options.Lockout.AllowedForNewUsers = true;
-    // Настройки пароля (можно скорректировать по требованиям)
+    // Password settings (minimum requirements, no strict validation)
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
@@ -28,11 +30,11 @@ builder.Services.AddIdentity<sh2.Models.User, sh2.Models.Role>(options =>
     options.Password.RequireLowercase = false;
 })
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddDefaultUI(); // Add built-in Identity UI
 
-// ... Добавление Razor Pages и других сервисов
+// Add Razor Pages and related services
 builder.Services.AddRazorPages();
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -50,7 +52,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-// Добавляем аутентификацию и авторизацию
+// Enable authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -61,5 +63,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+app.MapRazorPages();
 
 app.Run();
