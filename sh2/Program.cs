@@ -41,6 +41,25 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+// --- START OF INITIALIZATION BLOCK ---
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        // Вызываем наш метод наполнения
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ошибка при наполнении базы данных (Seeding).");
+    }
+}
+// --- END OF BLOCK ---
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

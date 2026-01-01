@@ -1,8 +1,71 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div> *@
+
+
+@using sh2.Models
+@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Welcome to sh2 Store</h1>
+    <p>Best products for developers / Лучшие товары для разработчиков</p>
+</div>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @if (Model != null)
+        {
+            @foreach (var product in Model)
+            {
+                var mainImage = product.ProductImages?.FirstOrDefault();
+                var imageUrl = (mainImage != null) ? mainImage.ImageUrl : "https://placehold.co/600x400?text=No+Image";
+
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+
+                        <img src="@imageUrl"
+                             class="card-img-top"
+                             alt="@product.Name"
+                             style="height: 200px; object-fit: cover;">
+
+
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text text-muted">@product.Description</p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="h5 text-primary mb-0">@product.Price.ToString("C")</span>
+
+                                @if (product.InStock > 0)
+                                {
+                                    <span class="badge bg-success">In Stock: @product.InStock</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Out of Stock / Нет на складе</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a href="#" class="btn btn-outline-primary w-100">Add to Cart / Купить</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                No products found / Товары не найдены
+            </div>
+        }
+    </div>
 </div>
