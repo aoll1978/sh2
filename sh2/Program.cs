@@ -39,6 +39,15 @@ builder.Services.AddRazorPages();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Add session services with configuration options for timeout and cookie settings 
+// Добавляем сервисы сессий с параметрами конфигурации для таймаута и настроек куки, чтобы использовать сессии в приложении
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+    options.Cookie.HttpOnly = true; // Set HttpOnly for security
+    options.Cookie.IsEssential = true; // Make the session cookie essential
+});
+
 var app = builder.Build();
 
 // --- START OF INITIALIZATION BLOCK ---
@@ -70,6 +79,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseSession(); // Enable session middleware to use sessions in the application 
+// Включаем промежуточное ПО сессий для использования сессий в приложении
 
 // Enable authentication and authorization
 app.UseAuthentication();
