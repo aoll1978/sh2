@@ -42,6 +42,24 @@ namespace sh2.Controllers
             return View(products);
         }
 
+        // GET: Home/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
+
+            // «агружаем товар со всеми картинками и категори€ми
+            // Load product with all images and categories
+            var product = await _context.Products
+                .Include(p => p.ProductImages)
+                .Include(p => p.ProductCategories)
+                .ThenInclude(pc => pc.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
+
         public IActionResult Privacy()
         {
             return View();

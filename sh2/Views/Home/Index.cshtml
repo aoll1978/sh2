@@ -31,14 +31,19 @@
                 <div class="col">
                     <div class="card h-100 shadow-sm">
 
-                        <img src="@imageUrl"
-                             class="card-img-top"
-                             alt="@product.Name"
-                             style="height: 200px; object-fit: cover;">
-
+                        <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">
+                            <img src="@imageUrl"
+                                 class="card-img-top"
+                                 alt="@product.Name"
+                                 style="height: 200px; object-fit: cover;">
+                        </a>
 
                         <div class="card-body">
-                            <h5 class="card-title">@product.Name</h5>
+                            <h5 class="card-title">
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id" class="text-decoration-none text-dark">
+                                    @product.Name
+                                </a>
+                            </h5>
                             <p class="card-text text-muted">@product.Description</p>
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
@@ -54,9 +59,16 @@
                                 }
                             </div>
                         </div>
+
                         <div class="card-footer bg-transparent border-top-0">
-                            <a href="#" class="btn btn-outline-primary w-100">Add to Cart / Купить</a>
+                            <a asp-controller="Home" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary w-100">
+                                View Details / Подробнее
+                            </a>
                         </div>
+
+@*                      <div class="card-footer bg-transparent border-top-0">
+                            <a href="#" class="btn btn-outline-primary w-100">Add to Cart / Купить</a>
+                        </div> *@
                     </div>
                 </div>
             }
