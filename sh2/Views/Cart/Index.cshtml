@@ -1,7 +1,7 @@
 ﻿@model sh2.Models.Cart
 
 @{
-    ViewData["Title"] = "Your Cart";
+    ViewData["Title"] = "Your Cart"; 
 }
 
 <div class="container mt-4">
@@ -51,7 +51,7 @@
 
         <div class="text-center mt-4">
             <a asp-controller="Home" asp-action="Index" class="btn btn-secondary me-2">Continue Shopping</a>
-            <a href="#" class="btn btn-success btn-lg">Checkout / Оформить</a>
+            <a asp-controller="Orders" asp-action="Checkout" class="btn btn-success btn-lg">Checkout / Оформить</a>
         </div>
     }
     else
